@@ -1,0 +1,14 @@
+.task-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 15px;
+
+}
+.task-add {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+

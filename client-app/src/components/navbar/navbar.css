@@ -1,0 +1,18 @@
+.nav {
+    color: gray;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: aquamarine;
+}
+
+.nav-buttons {
+    display: flex;
+}
+
+.n-boton{
+    padding: 3px;
+    margin: 0px 10px;
+}
+
