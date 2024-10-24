@@ -6,6 +6,7 @@ export const findUserByEmail = async (email:string) => {
     const query = "SELECT * FROM users WHERE email = $1;"
     const values = [email]
     const {rows, rowCount} = await pool.query(query, values)
+    console.log(rows)
     if(!rowCount) {
         return {ok:false, message:"El Email no esta registrado"}
     } else {

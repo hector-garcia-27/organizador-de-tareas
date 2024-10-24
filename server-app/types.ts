@@ -10,4 +10,12 @@ export const newUser = z.object({
 
 // types
 
+export type IJwToken = {
+    id: number,
+    username: string,
+    email: string
+}
+
 export type INewUser = z.infer<typeof newUser>
+
+export type IloginUser = Omit<INewUser, "username">
