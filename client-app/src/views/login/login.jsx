@@ -12,17 +12,22 @@ const Login = () => {
 
     const navigate = useNavigate()
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault()
-        //setSuccess("")
         const validarCampos = ValidacionDataLogin(email, password, setEmail, setError, setPassword) //validacion de campos de login
         if (validarCampos === true) {
+
             setSuccess("Comprobando datos")
-            const res = loginPost(email, password)
-            if (res.code === 404 || res.code === 401) {
-                setError(res.message)
+            const response = await loginPost(email, password)
+            
+            if (response.code !== 200) {
+                setSuccess('')
+                setError(response.message)
+                return
             }
-            if (res.code === 200) {
+            if (response.code === 200) {
+                const token = response.token
+                sessionStorage.setItem('token', token);
                 setEmail('')
                 setPassword('')
                 navigate('/task')

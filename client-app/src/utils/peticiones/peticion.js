@@ -6,38 +6,44 @@ export const loginPost = async (email, password) => {
         const res = await fetch(`${endpoint}/login`, {
             method: 'POST',
             headers: {
-                'content-type': 'application/json',
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify({ email, password })
         })
-        if (res.status === 404) {
-            return { code: 1, message: "El usuario no existe" }
+        const data = await res.json()
+        if (data.ok === false) {
+            // console.log( { code: res.status, message: data.message })
+            return { code: res.status, message: data.message }
         }
-        if (res.status === 401) {
-            return { code: 2, message: "La contraseña es incorrecta" }
-        }
-        if (res.status === 200) {
-            return { code: 3, message: "hagale papa" }
+        if (data.ok === true) {
+            const token = data.token
+            //console.log({code: res.status, token})
+            return { code: res.status, token }
         }
     } catch (error) {
         console.log(error)
     }
 }
 
-export const registerPost = async ({username, email, password}) => {
+export const registerPost = async ({ username, email, password }) => {
     try {
         const res = await fetch(`${endpoint}/register`, {
             method: 'POST',
             headers: {
-                'content-type' : 'application/json',
+                'Content-Type': 'application/json',
             },
-            body: JSON.stringify({username, email, password})
+            body: JSON.stringify({ username, email, password })
         })
-        if (res.status === 201) {
-            return {code: 1 , message: "Usuario registrado"}
-        }   
+        const data = await res.json()
+        if (data.ok === false) {
+
+            return { code: res.status, message: data.message }
+        }
+        if (data.ok === true) {
+            return { code: res.status, message: data.message }
+        }
     } catch (error) {
-        console.log(error)
+        console.log({ mesagge: "Hay un error en la peticion registerPost", error })
     }
 }
 
@@ -46,7 +52,7 @@ export const AddTaskPost = async () => {
         const res = await fetch(`${endpoint}/addtask`, {
             method: 'POST',
             headers: {
-                'content-type' : 'application/json',
+                'content-type': 'application/json',
             },
             body: JSON.stringify({})
         })

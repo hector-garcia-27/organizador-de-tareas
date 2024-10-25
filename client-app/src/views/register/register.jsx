@@ -17,20 +17,21 @@ const Register = () => {
         const { name, value } = event.target
         setData({ ...data, [name]: value })
     }
-    console.log(data)
+    //console.log(data)
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault()
         // setSuccess("")
         const validarCampos = ValidacionDataRegister(data, setData, setError)
         if (validarCampos === true) {
             setSuccess("Registrando")
-            const res = registerPost(data)
-            if (res.code !== 201) { // falta desglosar los codigos de error que se manda desde el back
-                setError(res.message)
-                setData(initialStateRegister)
+            const response = await registerPost(data)
+            if (response.code !== 201) { // falta desglosar los codigos de error que se manda desde el back
+                setSuccess("")
+                setError(response.message)
             }
-            if (res.code === 201) {
+            if (response.code === 201) {
+                setError("")
                 setData(initialStateRegister)
                 navigate('/login')
             }

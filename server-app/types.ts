@@ -1,3 +1,4 @@
+import { JwtPayload } from 'jsonwebtoken';
 import { z } from 'zod'
 
 // esquemas de validación de zod
@@ -19,3 +20,11 @@ export type IJwToken = {
 export type INewUser = z.infer<typeof newUser>
 
 export type IloginUser = Omit<INewUser, "username">
+
+declare module 'express-serve-static-core' { // para agregar estas propiedades personalizadas al tipo definido de express "Request"
+    interface Request {
+        id?: string | JwtPayload;
+        email?: string;
+        user?: string;
+    }
+}
