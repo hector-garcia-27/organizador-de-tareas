@@ -1,8 +1,9 @@
 export const initialStateAddTask = {
     tittle: '',
     description: '',
-    budget: '',
-    priority: '0',
+    budget: 0,
+    priority: '',
+    state: ''
 }
 
 export const initialStateRegister = {

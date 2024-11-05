@@ -22,7 +22,7 @@ const Register = () => {
     const handleSubmit = async (event) => {
         event.preventDefault()
         // setSuccess("")
-        const validarCampos = ValidacionDataRegister(data, setData, setError)
+        const validarCampos = ValidacionDataRegister(data, setError)
         if (validarCampos === true) {
             setSuccess("Registrando")
             const response = await registerPost(data)

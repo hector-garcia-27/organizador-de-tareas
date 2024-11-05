@@ -27,7 +27,7 @@ const Login = () => {
             }
             if (response.code === 200) {
                 const token = response.token
-                sessionStorage.setItem('token', token);
+                localStorage.setItem('token', token);
                 setEmail('')
                 setPassword('')
                 navigate('/task')

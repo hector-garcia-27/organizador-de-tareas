@@ -1,25 +1,39 @@
 import { useState } from 'react';
 import { Button, Form, Modal } from 'react-bootstrap';
 import { initialStateAddTask } from '../../utils/funciones/initialStates';
+import { getToken, ValidacionDataTarea } from '../../utils/funciones/funciones';
+import { AddTaskPost } from '../../utils/peticiones/peticion';
 
 function ModalAddTask() {
+
   const [show, setShow] = useState(false);
   const [newTask, setNewTask] = useState(initialStateAddTask)
-
+  const [error, setError] = useState("")
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+
   const handleChange = (event) => {
     const { name, value } = event.target
-    setNewTask({ ...newTask, [name]: value })
+    if (name === "budget" && value === NaN){
+      setNewTask({...newTask, [name]: 0})
+    } else if(name === "budget" && value !== NaN){
+      setNewTask({...newTask, [name]: parseInt(value)})
+    } else {
+      setNewTask({ ...newTask, [name]: value })
+    }
   }
 
-  const submitForm = () => {
-    
-    console.log(newTask) // peticion POST a tabla tareas
-    
-    setNewTask(initialStateAddTask)
+  const submitForm = async () => {
+    const validacionDatos = ValidacionDataTarea(newTask, setError)
+    if (validacionDatos === true) {
+      setNewTask(initialStateAddTask)
+      const token = getToken()
+      const taskPost = await AddTaskPost(newTask, token)
+      console.log(taskPost)
+    }
   }
+
   return (
     <>
       <Button variant="primary" onClick={handleShow}>
@@ -46,12 +60,17 @@ function ModalAddTask() {
             </Form.Group>
             <Form.Group>
               <Form.Select name='priority' value={newTask.priority} onChange={handleChange}>
-                <option value="0">Prioridad</option>
-                <option value="1">Crítica</option>
-                <option value="2">Alta</option>
-                <option value="3">Media</option>
-                <option value="4">Baja</option>
+                <option value=""></option>
+                <option value="Crítica">Crítica</option>
+                <option value="Alta">Alta</option>
+                <option value="Media">Media</option>
+                <option value="Baja">Baja</option>
               </Form.Select>
+              <Form.Group className="mb-3" controlId="modal-descripcion" >
+                <Form.Label>
+                  {error.length > 0 && <h3 className='modal-error'>{error}</h3>}
+                </Form.Label>
+              </Form.Group>
             </Form.Group>
           </Form>
         </Modal.Body>
