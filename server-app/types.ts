@@ -1,4 +1,4 @@
-import { JwtPayload } from 'jsonwebtoken';
+// import { JwtPayload } from 'jsonwebtoken';
 import { z } from 'zod'
 
 // esquemas de validación de zod
@@ -9,6 +9,13 @@ export const newUser = z.object({
     password: z.string().min(5,{message:"La contraseña debe tener al menos 5 digitos"})
 })
 
+export const newTask = z.object({
+    budget: z.number(),
+    description: z.string(), 
+    state: z.string(), 
+    priority: z.string(), 
+    tittle: z.string()
+})
 // types
 
 export type IJwToken = {
@@ -21,9 +28,13 @@ export type INewUser = z.infer<typeof newUser>
 
 export type IloginUser = Omit<INewUser, "username">
 
+export type ITask = z.infer<typeof newTask>
+
+export type INewTask = ITask & {idUser: number | undefined }
+
 declare module 'express-serve-static-core' { // para agregar estas propiedades personalizadas al tipo definido de express "Request"
     interface Request {
-        id?: string | JwtPayload;
+        id?: number;
         email?: string;
         user?: string;
     }

@@ -17,15 +17,13 @@ export const verifyToken: RequestHandler = async (req: Request, res: Response, n
         try {
             const { id, email, username } = jwt.verify(token, jwtSecret) as JwtPayload
             req.id = id
-            req.email= email
+            req.email = email
             req.user = username
             next()
         } catch (error: any | undefined) {
-            res.status(401).json({ message: "Sin autorización", error: error.message })
+            res.status(401).json({ ok: true, message: "Sin autorización", error: error.message })
         }
     } else {
-        res.status(401).json({message: "Sin autorización cabecera sin credenciales"})
+        res.status(401).json({ ok: false, message: "Sin autorización cabecera sin credenciales" })
     }
-
-    next()
-}   
+}
